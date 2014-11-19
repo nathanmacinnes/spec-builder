@@ -1,5 +1,7 @@
 # spec-builder #
 
+[![Build Status](https://travis-ci.org/nathanmacinnes/spec-builder.svg)](https://travis-ci.org/nathanmacinnes/spec-builder)
+
 _Roll your own test/spec assertions syntax_
 
 **Step 1:** Pick an awesome verb
