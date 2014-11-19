@@ -1,6 +1,6 @@
 # spec-builder #
 
-_ Roll your own test/spec assertions syntax _
+_Roll your own test/spec assertions syntax_
 
 **Step 1:** Pick an awesome verb
 ````js
