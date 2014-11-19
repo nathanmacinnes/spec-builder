@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Roll your own test/spec assertions syntax",
   "main": "lib/spec-builder.js",
-  "repository": "",
+  "repository": "https://github.com/nathanmacinnes/spec-builder",
   "author": "Nathan MacInnes <nathan@macinn.es>",
   "devDependencies": {
     "chance": "^0.6.1",
@@ -15,5 +15,8 @@
     "injectr": "^0.5.1",
     "mocha": "^2.0.1",
     "pretendr": "^0.6.2"
+  },
+  "scripts" : {
+    "test" : "grunt"
   }
 }
