@@ -1,6 +1,6 @@
 {
   "name": "spec-builder",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Roll your own test/spec assertions syntax",
   "main": "lib/spec-builder.js",
   "repository": "https://github.com/nathanmacinnes/spec-builder",

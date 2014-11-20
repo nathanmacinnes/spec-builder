@@ -99,6 +99,19 @@ describe("spec-builder", function () {
                 t = test(1);
                 assert.equal(t.equals()[prop], t);
             });
+            it("leaves properties blank if no route matches", function () {
+                var parts = [randomString(), randomString()];
+                test.add(parts.join("."));
+                assert.equal(test(10)[parts[0]], undefined);
+            });
+            it("allows extending an existing method", function () {
+                var method1 = randomString(),
+                    method2 = randomString();
+                test.add(method1, function () {});
+                test.add(method1 + "." + method2, cb.mock);
+                test(1)[method1][method2]();
+                assert.equal(cb.calls.length, 1);
+            });
             describe("to display an assertion message", function () {
                 var args,
                     method,
@@ -135,21 +148,16 @@ describe("spec-builder", function () {
             });
         });
         describe("message method", function () {
-            it("calls util.inspect for all but the 1st argument", function () {
-                var args = random.n(randomString, random.natural({
-                    min : 1,
-                    max : 10
-                }));
-                test.message.apply(null, [[]].concat(args));
-                args.forEach(function (arg, index) {
-                    assert.equal(mockInspect.calls[index].args[0], arg);
-                });
-            });
-            it("returns the first inspect result at the start", function () {
-                var msg;
+            it("returns the inspect result for arg2 at the start", function () {
+                var actual = randomString(),
+                    call,
+                    msg;
                 mockInspect.fake(randomString);
-                msg = test.message([], randomString);
-                assert.equal(msg.indexOf(mockInspect.calls[0].returned), 0);
+                msg = test.message([], actual);
+                call = mockInspect.calls.filter(function (thisCall) {
+                    return thisCall.args[0] === actual;
+                })[0];
+                assert.equal(msg.indexOf(call.returned), 0);
             });
             it("returns comma-separated arg results at the end", function () {
                 var args = random.n(randomString, random.natural({
@@ -160,7 +168,10 @@ describe("spec-builder", function () {
                     msg;
                 mockInspect.fake(randomString);
                 msg = test.message.apply(null, [[]].concat(args));
-                joined = mockInspect.calls.slice(1).map(function (call) {
+                joined = mockInspect.calls.filter(function (call) {
+                    // exclude args[0] as that is the "actual"
+                    return call.args[0] !== args[0];
+                }).map(function (call) {
                     return call.returned;
                 }).join(", ");
                 assert.equal(msg.indexOf(joined),
